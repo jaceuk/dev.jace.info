@@ -1,0 +1,96 @@
+<script lang="ts">
+	import content from '$content/archive.json';
+
+	function compareStrings(a: string, b: string) {
+		a = a.toLowerCase();
+		b = b.toLowerCase();
+
+		return a < b ? -1 : a > b ? 1 : 0;
+	}
+
+	const projects = content.projects.sort(function (a, b) {
+		return compareStrings(a.title, b.title);
+	});
+</script>
+
+<section class="with-gradient">
+	<div class="inner-wrapper">
+		<div class="archive">
+			<div class="intro">
+				<h1>{content.title}</h1>
+				<p>{content.text}</p>
+			</div>
+
+			<div class="table">
+				<div class="row">
+					<div class="cell heading">Client</div>
+					<div class="cell heading">Description</div>
+				</div>
+
+				{#each projects as project}
+					<div class="row">
+						<div class="cell title">{project.title}</div>
+						<div class="cell">{project.text}</div>
+					</div>
+				{/each}
+			</div>
+		</div>
+	</div>
+</section>
+
+<style lang="scss">
+	.archive {
+		display: grid;
+		gap: var(--s-4-5);
+
+		.intro {
+			display: grid;
+			gap: var(--s-2-4);
+		}
+	}
+
+	.table .row {
+		display: grid;
+
+		@media (min-width: 768px) {
+			grid-template-columns: 1fr 2fr;
+		}
+
+		&:last-child {
+			.cell {
+				border-bottom: none;
+			}
+		}
+
+		.cell {
+			@media (min-width: 768px) {
+				border-bottom: 1px solid var(--c-divider);
+				border-right: 1px solid var(--c-divider);
+				padding: var(--s-1-2);
+			}
+
+			&:nth-child(2) {
+				border-right: none;
+				margin-bottom: 16px;
+
+				@media (min-width: 768px) {
+					margin: 0;
+				}
+			}
+
+			&.heading {
+				color: var(--c-accent);
+				text-transform: uppercase;
+				display: none;
+
+				@media (min-width: 768px) {
+					display: block;
+				}
+			}
+
+			&.title {
+				font-weight: var(--fw-bold);
+			}
+		}
+	}
+</style>
